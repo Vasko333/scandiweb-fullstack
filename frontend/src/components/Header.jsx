@@ -27,8 +27,8 @@ export default function Header({ setIsCartOpen }) {
   const totalItems = getTotalItems();
 
   const handleCategoryClick = (catName) => {
-    const categoryPath = catName === 'all' ? '/' : `/${catName.toLowerCase()}`;
-    setSelectedCategory(catName === 'all' ? null : catName);
+    const categoryPath = `/${catName.toLowerCase()}`;
+    setSelectedCategory(catName);
     navigate(categoryPath);
   };
 
@@ -41,10 +41,10 @@ export default function Header({ setIsCartOpen }) {
   return (
     <header className="p-4 overflow-x-hidden flex justify-between pl-[14%] pr-[14%] items-center">
       <div className="space-x-4">
-        {data.categories.map((cat) => (
+        {(data?.categories || []).map((cat) => (
           <a
             key={cat.id}
-            href={cat.name === 'all' ? '/' : `/${cat.name.toLowerCase()}`}
+            href={`/${cat.name.toLowerCase()}`}
             data-testid="category-link"
             className={`text-black hover:text-green-400 hover:border-b-2 hover:border-b-green-400 transition-all uppercase ${
               selectedCategory === cat.name

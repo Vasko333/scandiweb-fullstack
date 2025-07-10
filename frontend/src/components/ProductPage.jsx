@@ -80,7 +80,7 @@ export default function ProductPage() {
     <div className="bg-white overflow-x-hidden mt-[5%] pl-[14%] pr-[14%] max-w-screen flex justify-between">
 
       {/* Thumbnails */}
-      <div className="flex flex-col gap-4 overflow-y-auto max-h-[500px] scrollbar-hide">
+      <div data-testid="product-gallery" className="flex flex-col gap-4 overflow-y-auto max-h-[500px] scrollbar-hide">
         {repeatedGallery.map((thumb, index) => (
           <img
             key={index}
@@ -122,12 +122,13 @@ export default function ProductPage() {
         <h1 className="text-3xl font-bold mb-6 text-black">{product.name}</h1>
 
         {product.attributes.map((attr, index) => (
-          <div key={`${attr.name}-${index}`} className="mb-6 flex flex-col">
+          <div key={`${attr.name}-${index}`} data-testid={`product-attribute-${attr.name.toLowerCase()}`} className="mb-6 flex flex-col">
             <p className="text-lg font-semibold mb-2 text-black">{attr.name}:</p>
             <div className="flex space-x-2 flex-wrap">
               {attr.items.map((option) => (
                 <button
                   key={option.value}
+                  data-testid={`product-attribute-${attr.name.toLowerCase()}-${option.value}`}
                   className={`px-4 py-2 border-2 border-black hover:bg-black hover:text-white cursor-pointer ${
                     isAttributeSelected(attr.name, option.value)
                       ? attr.type !== 'swatch'
@@ -162,6 +163,7 @@ export default function ProductPage() {
 
         {product.inStock ? (
           <button
+            data-testid="add-to-cart"
             className="bg-emerald-400 text-white px-6 py-3 mb-6 rounded-lg hover:bg-emerald-500 hover:scale-90 transition duration-200"
             onClick={handleAddToCart}
           >
@@ -169,6 +171,7 @@ export default function ProductPage() {
           </button>
         ) : (
           <button
+            data-testid="add-to-cart"
             className="bg-gray-400 text-white px-6 py-3 mb-6 rounded-lg cursor-not-allowed"
             disabled
           >
@@ -176,7 +179,7 @@ export default function ProductPage() {
           </button>
         )}
 
-        <div className="text-base w-60 text-black" dangerouslySetInnerHTML={{ __html: product.description }} />
+        <div data-testid="product-description" className="text-base w-60 text-black" dangerouslySetInnerHTML={{ __html: product.description }} />
       </div>
     </div>
   );

@@ -39,6 +39,7 @@ export default function CategoryPage() {
   const navigate = useNavigate();
   const { category } = useParams();
 
+  
   useEffect(() => {
     if (category && category !== selectedCategory) {
       setSelectedCategory(category);
@@ -47,9 +48,12 @@ export default function CategoryPage() {
     }
   }, [category, selectedCategory, setSelectedCategory]);
 
+  const shouldShowAll = category === 'all' || (!category && !selectedCategory);
+  
   const { loading, error, data } = useQuery(GET_PRODUCTS, {
-    variables: { category: selectedCategory },
-    skip: false,
+    variables: { 
+      category: shouldShowAll ? null : (category || selectedCategory) 
+    }
   });
 
   if (loading) return <p>Loading...</p>;
