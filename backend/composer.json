@@ -1,0 +1,12 @@
+{
+  "require": {
+    "vlucas/phpdotenv": "^5.4",
+    "webonyx/graphql-php": "^15.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Resolvers\\": "app/Resolvers/",
+      "Models\\": "app/Models/"
+    }
+  }
+}
