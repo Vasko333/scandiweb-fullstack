@@ -5,7 +5,6 @@ export default function CartOverlay({ setIsCartOpen }) {
   const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   return (
     <div
-      data-testid="cart-overlay"
       className="fixed pl-6 pr-6 pb-6 overflow-x-hidden top-0 right-4 bg-white shadow-lg w-[20%] z-50"
       style={{ top: '64px' }}
     >

@@ -39,21 +39,21 @@ export default function CategoryPage() {
   const navigate = useNavigate();
   const { category } = useParams();
 
-  
+  // Sync URL param → selectedCategory state,
+  // treating "all" (and missing) as null.
   useEffect(() => {
-    if (category && category !== selectedCategory) {
+    if (category === 'all') {
+      setSelectedCategory(null);
+    } else if (category && category !== selectedCategory) {
       setSelectedCategory(category);
     } else if (!category && selectedCategory) {
       setSelectedCategory(null);
     }
   }, [category, selectedCategory, setSelectedCategory]);
 
-  const shouldShowAll = category === 'all' || (!category && !selectedCategory);
-  
   const { loading, error, data } = useQuery(GET_PRODUCTS, {
-    variables: { 
-      category: shouldShowAll ? null : (category || selectedCategory) 
-    }
+    variables: { category: selectedCategory },
+    skip: false,
   });
 
   if (loading) return <p>Loading...</p>;
@@ -67,11 +67,7 @@ export default function CategoryPage() {
       <h2 className="md:text-4xl tracking-wide capitalize md:mt-[3%] md:mb-[4%]">
         {selectedCategory ? selectedCategory : 'All Products'}
       </h2>
-      <div
-        className={`transition-opacity duration-300 ${
-          isCartOpen ? 'opacity-50 bg-black/30' : ''
-        }`}
-      >
+      <div className={`transition-opacity duration-300 ${isCartOpen ? 'opacity-50 bg-black/30' : ''}`}>
         <div className="flex md:flex-wrap md:justify-center md:gap-x-40 md:gap-y-8 w-full">
           {data.products.map((product) => (
             <div
@@ -89,14 +85,8 @@ export default function CategoryPage() {
                 onClick={() => navigate(`/product/${product.id}`)}
               />
               <div className="flex items-start md:ml-[10%] mt-1 justify-center flex-col">
-                <p className="md:mt-2 text-md">
-                  {product.name}
-                </p>
-                <p
-                  className={`mt-1 font-semibold tracking-wide ${
-                    !product.inStock ? 'text-gray-600/50' : ''
-                  }`}
-                >
+                <p className="md:mt-2 text-md">{product.name}</p>
+                <p className={`mt-1 font-semibold tracking-wide ${!product.inStock ? 'text-gray-600/50' : ''}`}>
                   {product.prices[0]?.currency?.symbol || '$'}
                   {product.prices[0].amount.toFixed(2)}
                 </p>

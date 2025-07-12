@@ -18,7 +18,6 @@ function App() {
             <Header setIsCartOpen={setIsCartOpen} />
             <div className="relative">
               <Routes>
-                
                 <Route path="/:category?" element={<CategoryPage />} />
                 <Route path="/product/:id" element={<ProductPage />} />
               </Routes>

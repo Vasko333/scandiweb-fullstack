@@ -17,60 +17,65 @@ export default function Header({ setIsCartOpen }) {
   const { selectedCategory, setSelectedCategory } = useCategory();
   const { getTotalItems } = useCart();
   const navigate = useNavigate();
-
-  if (loading) return <p>Loading...</p>;
-  if (error) {
-    console.error('GraphQL Error:', error);
-    return <p>Error: {error.message}</p>;
-  }
-
   const totalItems = getTotalItems();
 
-  const handleCategoryClick = (catName) => {
-    const categoryPath = `/${catName.toLowerCase()}`;
-    setSelectedCategory(catName);
-    navigate(categoryPath);
+  const handleCategoryClick = (catLower) => {
+    setSelectedCategory(catLower === 'all' ? null : catLower);
+    navigate(`/${catLower}`);
   };
 
-  // Handler to navigate home on SVG click
-  const handleLogoClick = () => {
-    setSelectedCategory(null); // reset category selection on home nav
-    navigate('/');
-  };
+  let categoriesContent = [];
+
+  if (loading) {
+    categoriesContent.push(<p key="loading">Loading...</p>);
+  } else if (error) {
+    console.error('GraphQL Error:', error);
+    categoriesContent.push(<p key="error">Error: {error.message}</p>);
+  } else {
+    for (const cat of data.categories) {
+      const catLower = cat.name.toLowerCase();
+      const isActive =
+        (catLower === 'all' && selectedCategory === null) ||
+        selectedCategory === catLower;
+
+      categoriesContent.push(
+        <a
+          key={cat.id}
+          href={`/${catLower}`}
+          data-testid="category-link"
+          className={`
+            uppercase transition-all
+            hover:text-green-400 hover:border-b-2 hover:border-b-green-400
+            ${isActive
+              ? 'text-green-400 border-b-2 border-b-green-400 font-bold pb-4'
+              : 'text-black'}
+          `}
+          onClick={(e) => {
+            e.preventDefault();
+            handleCategoryClick(catLower);
+          }}
+        >
+          {cat.name}
+        </a>
+      );
+    }
+  }
 
   return (
-    <header className="p-4 overflow-x-hidden flex justify-between pl-[14%] pr-[14%] items-center">
-      <div className="space-x-4">
-        {(data?.categories || []).map((cat) => (
-          <a
-            key={cat.id}
-            href={`/${cat.name.toLowerCase()}`}
-            data-testid="category-link"
-            className={`text-black hover:text-green-400 hover:border-b-2 hover:border-b-green-400 transition-all uppercase ${
-              selectedCategory === cat.name
-                ? 'text-green-400 border-b-2 border-b-green-400 pb-4 transition-all font-bold'
-                : ''
-            }`}
-            onClick={(e) => {
-              e.preventDefault();
-              handleCategoryClick(cat.name);
-            }}
-          >
-            {cat.name}
-          </a>
-        ))}
-      </div>
+    <header className="p-4 flex justify-between items-center pl-[14%] pr-[14%] overflow-x-hidden">
+      {/* Category Links */}
+      <nav className="space-x-6">{categoriesContent}</nav>
 
-      {/* Logo SVG with navigation on click */}
+      {/* Logo */}
       <div
-        onClick={handleLogoClick}
+        onClick={() => handleCategoryClick('all')}
         style={{ cursor: 'pointer' }}
         aria-label="Home"
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
-            handleLogoClick();
+            handleCategoryClick('all');
           }
         }}
       >
@@ -105,6 +110,7 @@ export default function Header({ setIsCartOpen }) {
         </svg>
       </div>
 
+      {/* Cart Button */}
       <button
         data-testid="cart-btn"
         onClick={() => setIsCartOpen(true)}
@@ -127,7 +133,7 @@ export default function Header({ setIsCartOpen }) {
           />
         </svg>
         {totalItems > 0 && (
-          <div className="absolute top-0 right-0 bg-[#101018] text-white rounded-full w-4 h-4 flex items-center justify-center">
+          <div className="absolute top-0 right-0 bg-[#101018] text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
             {totalItems}
           </div>
         )}
