@@ -42,7 +42,7 @@ export default function Header({ setIsCartOpen }) {
         <a
           key={cat.id}
           href={`/${catLower}`}
-          data-testid="category-link"
+          data-testid={isActive ? 'active-category-link' : 'category-link'}
           className={`
             uppercase transition-all
             hover:text-green-400 hover:border-b-2 hover:border-b-green-400

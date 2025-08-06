@@ -162,6 +162,7 @@ export default function ProductPage() {
 
         {product.inStock ? (
           <button
+          data-testid="add-to-cart"
             className="bg-emerald-400 text-white px-6 py-3 mb-6 rounded-lg hover:bg-emerald-500 hover:scale-90 transition duration-200"
             onClick={handleAddToCart}
           >

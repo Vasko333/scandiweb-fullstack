@@ -63,17 +63,17 @@ export default function CategoryPage() {
   }
 
   return (
-    <div className="relative p-4 pl-[14%] pr-[14%] overflow-x-hidden">
+    <div className="relative p-4 max-w-7xl mx-auto overflow-x-hidden">
       <h2 className="md:text-4xl tracking-wide capitalize md:mt-[3%] md:mb-[4%]">
         {selectedCategory ? selectedCategory : 'All Products'}
       </h2>
       <div className={`transition-opacity duration-300 ${isCartOpen ? 'opacity-50 bg-black/30' : ''}`}>
-        <div className="flex md:flex-wrap md:justify-center md:gap-x-40 md:gap-y-8 w-full">
+        <div className="flex flex-wrap justify-start gap-x-6 gap-y-10 w-full">
           {data.products.map((product) => (
             <div
               key={product.id}
               data-testid={`product-${product.name.toLowerCase().replace(/ /g, '-')}`}
-              className="flex flex-col md:items-start justify-start md:w-1/3 w-screen md:max-w-[23%] p-2 hover:shadow-2xl hover:border hover:border-gray-100 relative group"
+              className="flex flex-col md:items-start justify-start w-full sm:w-[48%] lg:w-[30%] p-2 hover:shadow-2xl hover:border hover:border-gray-100 relative group"
               style={{ height: '400px', minHeight: '400px' }}
             >
               <img
@@ -83,6 +83,7 @@ export default function CategoryPage() {
                   !product.inStock ? 'opacity-70' : ''
                 }`}
                 onClick={() => navigate(`/product/${product.id}`)}
+                data-testid={`product-${product.name.toLowerCase().replace(/\s+/g, '-')}`}
               />
               <div className="flex items-start md:ml-[10%] mt-1 justify-center flex-col">
                 <p className="md:mt-2 text-md">{product.name}</p>

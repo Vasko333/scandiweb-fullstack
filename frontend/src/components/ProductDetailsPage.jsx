@@ -42,7 +42,7 @@ export default function ProductDetailsPage({ productId }) {
       <div className="w-full pl-4">
         <h2 className="text-xl font-bold">{product.name}</h2>
         {product.attributes.map((attr) => (
-          <div key={attr.name} data-testid={`product-attribute-${attr.name.toLowerCase()}`} className="mb-2">
+          <div key={attr.name} data-testid={`product-attribute-${attribute.name.toLowerCase().replace(/\s+/g, '-')}`} className="mb-2">
             <p className="font-semibold">{attr.name}</p>
             <div className="flex space-x-2">
               {attr.items.map((item) => (
