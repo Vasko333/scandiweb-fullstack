@@ -14,17 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-// Load .env with error handling
-try {
-    $dotenv = Dotenv::createImmutable(__DIR__ . '/..');
-    $dotenv->load();
-} catch (Throwable $e) {
-    http_response_code(500);
-    header('Content-Type: application/json');
-    echo json_encode(['errors' => [['message' => 'Failed to load .env: ' . $e->getMessage()]]]);
-    exit;
-}
 
+$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
+$dotenv->load();
 // Create schema
 try {
     $schema = (new SchemaFactory())->create();

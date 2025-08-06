@@ -4,20 +4,12 @@ namespace App\GraphQL\Type;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Resolvers\QueryResolver;
-use Models\Category;
-use Models\Product;
 use PDO;
 
 class QueryType extends ObjectType
 {
-    public function __construct()
+    public function __construct(PDO $pdo)
     {
-        $pdo = new PDO(
-            'mysql:host=' . $_ENV['DB_HOST'] . ';dbname=' . $_ENV['DB_NAME'],
-            $_ENV['DB_USER'],
-            $_ENV['DB_PASS']
-        );
-
         parent::__construct([
             'name' => 'Query',
             'fields' => [
