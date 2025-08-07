@@ -16,6 +16,7 @@ WORKDIR /var/www/html
 COPY composer.json composer.lock ./
 RUN composer install --no-dev --prefer-dist --no-interaction
 COPY certs/ /var/www/html/certs/
+COPY frontend/public/.htaccess /var/www/html/public/.htaccess
 COPY . .
 
 EXPOSE 80

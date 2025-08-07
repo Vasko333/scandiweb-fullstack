@@ -7,10 +7,6 @@ export default function CartOverlay({ setIsCartOpen }) {
   const navigate = useNavigate();
 
   const handlePlaceOrder = () => {
-    // You can add order submission logic here (API call or mutation)
-    // For now, just clear cart or simulate order submission if needed
-
-    // Redirect to Thank You page
     navigate('/thank-you');
   };
 
